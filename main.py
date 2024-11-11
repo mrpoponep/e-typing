@@ -32,22 +32,28 @@ def typing_kana():
 
 def typing_romaji():
     wait = WebDriverWait(driver, 10)
-    while True:
-        sentence_text_element = wait.until(EC.presence_of_element_located((By.ID, "sentenceText")))
-        text_content = sentence_text_element.text
-        print(text_content)
-        for i in text_content:
-            pyautogui.press(i)
-            time.sleep(0.1)
-            if keyboard.is_pressed('space'):
-                print("Break key pressed. Exiting...")
-                exit()
+    try:
+        while True:
+            sentence_text_element = wait.until(EC.presence_of_element_located((By.ID, "sentenceText")))
+            text_content = sentence_text_element.text
+            
+            for i in text_content:
+                pyautogui.press(i)
+                time.sleep(0.1)
+                if keyboard.is_pressed('space'):
+                    print("Break key pressed. Exiting...")
+                    raise SystemExit
+
+    except SystemExit:
+        print("Script terminated by user.")
+    finally:
+        pass
 
 if __name__ == "__main__":
     driver.maximize_window()
     driver.get('https://www.e-typing.ne.jp/roma/check/')
 
-    email = "abc@gmail.com" 
+    email = "mrpoponep0403@gmail.com" 
     password = "123456" 
 
     email_field = driver.find_element(By.ID, "mail")
