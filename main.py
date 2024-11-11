@@ -35,8 +35,10 @@ def typing_romaji():
     while True:
         sentence_text_element = wait.until(EC.presence_of_element_located((By.ID, "sentenceText")))
         text_content = sentence_text_element.text
+        print(text_content)
         for i in text_content:
             pyautogui.press(i)
+            time.sleep(0.1)
             if keyboard.is_pressed('space'):
                 print("Break key pressed. Exiting...")
                 exit()
@@ -45,14 +47,28 @@ if __name__ == "__main__":
     driver.maximize_window()
     driver.get('https://www.e-typing.ne.jp/roma/check/')
 
+    email = "abc@gmail.com" 
+    password = "123456" 
+
+    email_field = driver.find_element(By.ID, "mail")
+    email_field.send_keys(email)
+
+    password_field = driver.find_element(By.ID, "password")
+    password_field.send_keys(password)
+
+    login_button = driver.find_element(By.ID, "login_btn")
+    login_button.click()
+    time.sleep(5)
+
+    check_button = driver.find_element(By.CSS_SELECTOR, "#level_check_member a")
+    check_button.click()
+
     script = """
     const element = document.getElementById('sentenceText');
     element.style.fontSize = '16px'; // Thay đổi kích thước chữ
     """
 
     driver.implicitly_wait(5)
-    button = driver.find_element(By.ID, "level_check_btn")
-    button.click()
     
     new_element = WAIT.until(EC.presence_of_element_located((By.CLASS_NAME, "pp_pic_holder"))) 
     pp_full_res_element = WAIT.until(EC.presence_of_element_located((By.ID, "pp_full_res"))) 
@@ -60,8 +76,8 @@ if __name__ == "__main__":
     iframe_element = pp_full_res_element.find_element(By.TAG_NAME, 'iframe')
     driver.switch_to.frame(iframe_element)
 
-    #start_btn = driver.find_element(By.ID, 'start_btn')
-    #start_btn.click()
+    start_btn = driver.find_element(By.ID, 'start_btn')
+    start_btn.click()
 
     while True:
         if keyboard.is_pressed('space'):
